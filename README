@@ -1,3 +1,4 @@
+```markdown
 # PostgresDB Go Library
 
 This library simplifies interaction with a Postgres database as key-value storage. It streamlines tasks such as storing, retrieving, and deleting data, as well as executing batch insertions and deletions.
