@@ -1,3 +1,8 @@
+It seems like the issue is with the nested code blocks in the README file. Markdown doesn't support nested code blocks. The outer code block is being interpreted as a Go code block, which is causing the inner code blocks to not be displayed correctly.
+
+Here's a revised version of the README where the outer code block has been removed:
+
+```markdown
 # PostgresDB Go Library
 
 This library simplifies interaction with a Postgres database as key-value storage. It streamlines tasks such as storing, retrieving, and deleting data, as well as executing batch insertions and deletions.
@@ -12,7 +17,7 @@ Begin by initializing the interface with the `NewPostgresDB(name, dir string)` f
 
 Here's how to get started:
 
-```shell
+```go
 package main
 
 import (
@@ -62,7 +67,7 @@ db, err := postgresKVdb.NewPostgresDB("<username>:<password>@<host>:<port>", "<d
 
 Errors within the library are handled using Go's built-in error handling mechanism. It's recommended to handle errors returned by library functions gracefully in your code.
 
-```shell
+```go
 // Example error handling
 result, err := db.Get(key)
 if err != nil {
@@ -73,7 +78,6 @@ if err != nil {
 ## Contributing
 
 We welcome contributions from the community! If you encounter any bugs, have feature requests, or want to contribute code changes, please follow the guidelines outlined in our [Contribution Guidelines](CONTRIBUTING.md).
-
 ```
 
-### Would you like to print the revised README file?
+This should display the Go code blocks correctly.
