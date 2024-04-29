@@ -1,8 +1,3 @@
-It seems like the issue is with the nested code blocks in the README file. Markdown doesn't support nested code blocks. The outer code block is being interpreted as a Go code block, which is causing the inner code blocks to not be displayed correctly.
-
-Here's a revised version of the README where the outer code block has been removed:
-
-```markdown
 # PostgresDB Go Library
 
 This library simplifies interaction with a Postgres database as key-value storage. It streamlines tasks such as storing, retrieving, and deleting data, as well as executing batch insertions and deletions.
@@ -79,5 +74,3 @@ if err != nil {
 
 We welcome contributions from the community! If you encounter any bugs, have feature requests, or want to contribute code changes, please follow the guidelines outlined in our [Contribution Guidelines](CONTRIBUTING.md).
 ```
-
-This should display the Go code blocks correctly.
