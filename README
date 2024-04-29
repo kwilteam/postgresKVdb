@@ -1,0 +1,51 @@
+# PostgresDB Go Library
+
+This library provides an interface to interact with a Postgres database. It allows you to store, retrieve, delete data, and perform batch insertions and deletions.
+
+## Installation
+
+To use this library, you need to have Go installed on your machine. You can download it from the official [Go website](https://golang.org/dl/).
+
+## Usage
+
+First, you need to initiate the interface with the `NewPostgresDB(name, dir string)` function. This function returns a new instance of `PostgresDB`.
+
+Here is an example of how to use it:
+
+```go
+// Create a new instance of PostgresDB
+db, err := NewPostgresDB("indexer:indexer123@localhost:5433", "indexer")
+if err != nil {
+	log.Fatalf("Failed to create a new instance of PostgresDB: %v", err)
+}
+```
+
+After creating a new instance, you can use it to interact with your database. Here is an example of how to set and get data:
+
+```go
+// Set up test data
+key := []byte("test_key")
+value := []byte("test_value")
+
+// Call the Set method
+err = db.Set(key, value)
+if err != nil {
+	log.Fatalf("Failed to set data: %v", err)
+}
+
+// Verify that the value is set correctly
+result, err := db.Get(key)
+if err != nil {
+	log.Fatalf("Failed to get data: %v", err)
+}
+```
+
+For more examples and use cases, please refer to the test examples in the repository.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a pull request.
+
+## License
+
+This project is licensed under the MIT License.

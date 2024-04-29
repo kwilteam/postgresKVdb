@@ -3,30 +3,35 @@ package postgreskvdb
 import (
 	"context"
 	"fmt"
+	"sync"
 
 	"github.com/jackc/pgx/v5"
 )
 
-type postgresDBBatch struct {
+type PostgresDBBatch struct {
 	conn    *pgx.Conn
-	queries []queriesBatch
+	queries []queryBatch
+	mtx     sync.Mutex
 }
-type queriesBatch struct {
+
+type queryBatch struct {
 	key, value []byte
 	operator   opType
 }
 
-var _ Batch = (*postgresDBBatch)(nil)
+var _ Batch = (*PostgresDBBatch)(nil)
 
-func NewPostgresDBBatch(conn *pgx.Conn) *postgresDBBatch {
-	return &postgresDBBatch{
+func NewPostgresDBBatch(conn *pgx.Conn) *PostgresDBBatch {
+	return &PostgresDBBatch{
 		conn:    conn,
-		queries: make([]queriesBatch, 0),
+		queries: make([]queryBatch, 0),
 	}
 }
 
-// Set implements Batch.
-func (b *postgresDBBatch) Set(key, value []byte) error {
+func (b *PostgresDBBatch) Set(key, value []byte) error {
+	b.mtx.Lock()
+	defer b.mtx.Unlock()
+
 	if len(key) == 0 {
 		return errKeyEmpty
 	}
@@ -36,27 +41,32 @@ func (b *postgresDBBatch) Set(key, value []byte) error {
 	if b.queries == nil {
 		return errBatchClosed
 	}
-	b.queries = append(b.queries, queriesBatch{key: key, value: value, operator: opTypeSet})
+	b.queries = append(b.queries, queryBatch{key: key, value: value, operator: opTypeSet})
 	return nil
 }
 
-// Delete implements Batch.
-func (b *postgresDBBatch) Delete(key []byte) error {
+func (b *PostgresDBBatch) Delete(key []byte) error {
+	b.mtx.Lock()
+	defer b.mtx.Unlock()
+
 	if len(key) == 0 {
 		return errKeyEmpty
 	}
 	if b.queries == nil {
 		return errBatchClosed
 	}
-	b.queries = append(b.queries, queriesBatch{key: key, operator: opTypeDelete})
+	b.queries = append(b.queries, queryBatch{key: key, operator: opTypeDelete})
 	return nil
 }
 
-// Write implements Batch.
-func (b *postgresDBBatch) Write() error {
+func (b *PostgresDBBatch) Write() error {
+	b.mtx.Lock()
+	defer b.mtx.Unlock()
+
 	if b.queries == nil {
 		return errBatchClosed
 	}
+
 	batch := &pgx.Batch{}
 	for _, value := range b.queries {
 		switch value.operator {
@@ -82,20 +92,17 @@ func (b *postgresDBBatch) Write() error {
 	if err != nil {
 		return err
 	}
-	err = br.Close()
-	if err != nil {
-		return err
-	}
-	return b.Close()
+	return nil
 }
 
-// WriteSync implements Batch.
-func (b *postgresDBBatch) WriteSync() error {
+func (b *PostgresDBBatch) WriteSync() error {
 	return b.Write()
 }
 
-// Close is a no-op for PostgreSQL batch.
-func (b *postgresDBBatch) Close() error {
+func (b *PostgresDBBatch) Close() error {
+	b.mtx.Lock()
+	defer b.mtx.Unlock()
+
 	// Clear queries for reusability
 	b.queries = nil
 	return nil
