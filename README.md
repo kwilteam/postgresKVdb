@@ -1,4 +1,4 @@
-```markdown
+````markdown
 # PostgresDB Go Library
 
 This library simplifies interaction with a Postgres database as key-value storage. It streamlines tasks such as storing, retrieving, and deleting data, as well as executing batch insertions and deletions.
@@ -6,6 +6,13 @@ This library simplifies interaction with a Postgres database as key-value storag
 ## Installation
 
 Ensure you have Go installed on your system. If not, download it from the official [Go website](https://golang.org/dl/).
+
+To install the library, run the following command in your terminal:
+
+```bash
+go get -u github.com/kwilteam/postgresKVdb
+```
+````
 
 ## Usage
 
@@ -54,14 +61,26 @@ func main() {
 
 To configure the library for your Postgres setup, modify the connection parameters in the `NewPostgresDB` function call according to your database configuration.
 
+Here's an example:
+
 ```go
 // Initialize the PostgresDB instance with custom connection parameters
 db, err := postgresKVdb.NewPostgresDB("<username>:<password>@<host>:<port>", "<database_name>")
 ```
 
+The connection parameters are as follows:
+
+- `<username>`: Your PostgreSQL username
+- `<password>`: Your PostgreSQL password
+- `<host>`: The hostname or IP address of your PostgreSQL server
+- `<port>`: The port number on which your PostgreSQL server is running
+- `<database_name>`: The name of the PostgreSQL database you want to connect to
+
 ## Error Handling
 
 Errors within the library are handled using Go's built-in error handling mechanism. It's recommended to handle errors returned by library functions gracefully in your code.
+
+Here's an example of error handling:
 
 ```go
 // Example error handling
@@ -74,4 +93,7 @@ if err != nil {
 ## Contributing
 
 We welcome contributions from the community! If you encounter any bugs, have feature requests, or want to contribute code changes, please follow the guidelines outlined in our [Contribution Guidelines](CONTRIBUTING.md).
+
+```
+
 ```
