@@ -1,7 +1,3 @@
-```
-
-```
-
 # PostgresDB Go Library
 
 This library simplifies interaction with a Postgres database as key-value storage. It streamlines tasks such as storing, retrieving, and deleting data, as well as executing batch insertions and deletions.
@@ -95,7 +91,3 @@ if err != nil {
 ## Contributing
 
 We welcome contributions from the community! If you encounter any bugs, have feature requests, or want to contribute code changes, please follow the guidelines outlined in our [Contribution Guidelines](CONTRIBUTING.md).
-
-```
-
-```
