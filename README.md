@@ -1,4 +1,7 @@
-````markdown
+```
+
+```
+
 # PostgresDB Go Library
 
 This library simplifies interaction with a Postgres database as key-value storage. It streamlines tasks such as storing, retrieving, and deleting data, as well as executing batch insertions and deletions.
@@ -12,7 +15,6 @@ To install the library, run the following command in your terminal:
 ```bash
 go get -u github.com/kwilteam/postgresKVdb
 ```
-````
 
 ## Usage
 
